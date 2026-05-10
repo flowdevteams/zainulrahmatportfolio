@@ -30,7 +30,7 @@ export function HeroSection() {
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6"
           >
             <span className="text-foreground">{"Hi, I'm "}</span>
-            <span className="gradient-text text-glow-cyan">Zainul Rahmat</span>
+            <span className="gradient-text text-glow-cyan">Zainul Rahmat Saputra</span>
           </motion.h1>
 
           {/* Animated roles */}
