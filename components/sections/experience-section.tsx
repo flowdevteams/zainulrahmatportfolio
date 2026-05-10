@@ -2,7 +2,7 @@
 
 import { motion, useInView } from "framer-motion"
 import { useRef } from "react"
-import { Ship, FileCheck, Clock, Globe, Shield, Users } from "lucide-react"
+import { Ship, FileCheck, Clock, Globe, Shield, Users, ExternalLink } from "lucide-react"
 
 const responsibilities = [
   {
@@ -79,7 +79,18 @@ export function ExperienceSection() {
               {/* Header content */}
               <div className="flex-1">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-2">
-                  <h3 className="text-2xl font-bold">Maritime Agency</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-2xl font-bold">Masagena Jaya Maritim</h3>
+                    <a 
+                      href="https://masagenajayamaritim.com" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="p-1.5 rounded-lg bg-secondary hover:bg-primary/20 text-muted-foreground hover:text-primary transition-all duration-300"
+                      title="Visit Website"
+                    >
+                      <ExternalLink size={18} />
+                    </a>
+                  </div>
                   <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-sm font-medium">
                     <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
                     Current Position
