@@ -1,139 +1,98 @@
-// "use client"
+"use client"
 
-// import { motion, useInView } from "framer-motion"
-// import { useRef } from "react"
-// import { Award, Calendar, ExternalLink, BadgeCheck } from "lucide-react"
+import { motion } from "framer-motion"
+import { ExternalLink, Award, Sparkles } from "lucide-react"
 
-// const certifications = [
-//   {
-//     title: "Canva School Certificate",
-//     issuer: "Canva",
-//     date: "2023",
-//     image: "/projects/sertifikat canva_page-0001.png",
-//     description:
-//       "Certified in using Canva for professional design work, including social media graphics, presentations, and marketing materials.",
-//     skills: ["Graphic Design", "Social Media", "Presentations", "Brand Design"],
-//     verified: true,
-//     link: "/projects/sertifikat canva_page-0001.png",
-//   },
-// ]
+// We extract the Google Drive IDs and map them to their local downloaded image
+const certificates = [
+  { id: "1JuwlKqtzve8w461fQ_V489hJimsb3cXU", title: "Professional Certificate", image: "/certificates/cert-1.png" },
+  { id: "1YLVFti3Hg37Ubk33KQj77wmEB8J5fYIN", title: "Achievement Award", image: "/certificates/cert-2.png" },
+  { id: "1oNA-wzUaCWpdBLXk_LpN-WAS_ZeB_7HN", title: "Specialization Certificate", image: "/certificates/cert-3.png" },
+  { id: "14mP0ZMtiNHgxawcjOd4156u8FVsth6bh", title: "Completion Certificate", image: "/certificates/cert-4.png" },
+  { id: "1S6PUEV-zonkdQuDZU-x5VR8lw7q9-atF", title: "Excellence Certificate", image: "/certificates/cert-5.png" },
+  { id: "1AAEmKsQvBD5drx8a7Hhc6ZSg6i-SLM8h", title: "Professional Training", image: "/certificates/cert-6.png" },
+  { id: "1yoXPv4V3mjDqmNWHmjvfmJo9Xx4-YxYi", title: "Skill Certification", image: "/certificates/cert-7.png" },
+  { id: "1t1xKqQ472D2ohnB4BoDZzWsjAEgvUQLZ", title: "Bootcamp Graduate", image: "/certificates/cert-8.png" },
+  { id: "1V5VNKGXcSBfLvYWx2x3SeCFvLZJK6ch0", title: "Tech Mastery", image: "/certificates/cert-9.png" },
+  { id: "18HTNIokHQVUdDSlBsjrW35ngd4p4ZtPh", title: "Advanced Certification", image: "/certificates/cert-10.png" },
+  { id: "1HFBzk6sP2x3jcRKjgQUNt1tpi-mEbfKC", title: "Special Recognition", image: "/certificates/cert-11.png" },
+]
 
-// export function CertificationsSection() {
-//   const ref = useRef(null)
-//   const isInView = useInView(ref, { once: true, margin: "-100px" })
+// We use a predefined set of icons and gradients for variety
+const gradientClasses = [
+  "from-blue-500/20 to-purple-500/20",
+  "from-emerald-500/20 to-teal-500/20",
+  "from-orange-500/20 to-red-500/20",
+  "from-pink-500/20 to-rose-500/20",
+]
 
-//   return (
-//     <section className="py-24 sm:py-32 px-6 relative bg-secondary/30">
-//       {/* Background decoration */}
-//       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-//         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/3 rounded-full blur-3xl" />
-//       </div>
+export function CertificationsSection() {
+  return (
+    <section id="certifications" className="py-24 sm:py-32 px-6 bg-background relative overflow-hidden">
+      {/* Subtle Background Glow - Optimized */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
 
-//       <div className="container mx-auto max-w-4xl relative z-10">
-//         {/* Section Header */}
-//         <motion.div
-//           ref={ref}
-//           initial={{ opacity: 0, y: 40 }}
-//           animate={isInView ? { opacity: 1, y: 0 } : {}}
-//           transition={{ duration: 0.8 }}
-//           className="text-center mb-16"
-//         >
-//           <span className="text-primary text-sm font-medium uppercase tracking-widest">
-//             Credentials
-//           </span>
-//           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6">
-//             <span className="gradient-text">Certifications</span>
-//           </h2>
-//           <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-//             Professional certifications that validate my skills and expertise.
-//           </p>
-//         </motion.div>
+      <div className="container mx-auto max-w-6xl relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-16"
+        >
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+            <Sparkles size={16} /> Credentials
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4 text-foreground">
+            Certifications Wall
+          </h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
+            A collection of professional milestones, continuous learning achievements, and verified expertise.
+          </p>
+        </motion.div>
 
-//         {/* Certifications */}
-//         <div className="space-y-6">
-//           {certifications.map((cert, index) => (
-//             <motion.div
-//               key={cert.title}
-//               initial={{ opacity: 0, y: 40 }}
-//               animate={isInView ? { opacity: 1, y: 0 } : {}}
-//               transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-//               className="glass rounded-2xl p-8 relative overflow-hidden group hover:border-primary/30 transition-all duration-500"
-//             >
-//               {/* Decorative elements */}
-//               <div className="absolute -top-10 -right-10 w-40 h-40 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+        {/* Horizontal Native Scroll Layout (Zero Lag) */}
+        <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-6 pb-8 pt-4 -mx-6 px-6 sm:mx-0 sm:px-0">
+          {certificates.map((cert, index) => {
+            const driveLink = `https://drive.google.com/file/d/${cert.id}/view?usp=share_link`
+            const gradient = gradientClasses[index % gradientClasses.length]
 
-//               <div className="relative z-10 flex flex-col md:flex-row gap-6">
-//                 {/* Certificate Image */}
-//                 <div className="shrink-0">
-//                   <div className="w-28 h-20 rounded-2xl overflow-hidden border border-white/10">
-//                     <img
-//                       src={cert.image}
-//                       alt={cert.title}
-//                       className="w-full h-full object-cover"
-//                     />
-//                   </div>
-//                 </div>
+            return (
+              <a
+                href={driveLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                key={cert.id}
+                className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-border bg-card hover:border-primary/50 transition-all duration-300 shrink-0 snap-center w-[80vw] sm:w-[50vw] md:w-[320px] h-[320px] p-8"
+              >
+                {/* CSS Abstract Background Instead of Image */}
+                <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                
+                {/* Top Icon Area */}
+                <div className="relative z-10">
+                  <div className="w-16 h-16 rounded-2xl bg-secondary border border-border flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary group-hover:border-primary group-hover:shadow-[0_0_30px_rgba(var(--primary),0.3)] transition-all duration-500">
+                    <Award size={32} className="text-muted-foreground group-hover:text-primary-foreground transition-colors duration-500" />
+                  </div>
+                  
+                  {/* Title */}
+                  <h3 className="text-foreground font-bold text-xl mb-3 line-clamp-3 leading-snug">
+                    {cert.title}
+                  </h3>
+                  
+                  {/* Decorative Line */}
+                  <div className="w-12 h-1 bg-border rounded-full group-hover:w-full group-hover:bg-primary/50 transition-all duration-500" />
+                </div>
 
-//                 {/* Content */}
-//                 <div className="flex-1">
-//                   <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
-//                     <div>
-//                       <h3 className="text-xl font-bold flex items-center gap-2">
-//                         {cert.title}
-//                         {cert.verified && (
-//                           <BadgeCheck size={20} className="text-primary" />
-//                         )}
-//                       </h3>
-//                       <p className="text-primary font-medium mt-1">{cert.issuer}</p>
-//                     </div>
-//                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-//                       <Calendar size={16} />
-//                       {cert.date}
-//                     </div>
-//                   </div>
+                {/* Bottom Link Area */}
+                <div className="relative z-10 flex items-center gap-2 text-muted-foreground text-sm font-medium group-hover:text-primary transition-colors duration-300 mt-6">
+                  Verify Credential <ExternalLink size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
+                </div>
+              </a>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
 
-//                   <p className="text-muted-foreground leading-relaxed mb-4">
-//                     {cert.description}
-//                   </p>
-
-//                   {/* Skills */}
-//                   <div className="flex flex-wrap gap-2 mb-4">
-//                     {cert.skills.map((skill) => (
-//                       <span
-//                         key={skill}
-//                         className="px-3 py-1 rounded-full bg-secondary text-xs font-medium text-muted-foreground"
-//                       >
-//                         {skill}
-//                       </span>
-//                     ))}
-//                   </div>
-
-//                   {/* View Certificate Link */}
-//                   <a
-//                     href={cert.link}
-//                     target="_blank"
-//                     rel="noopener noreferrer"
-//                     className="inline-flex items-center gap-2 text-primary text-sm font-medium hover:gap-3 transition-all"
-//                   >
-//                     View Certificate
-//                     <ExternalLink size={14} />
-//                   </a>
-//                 </div>
-//               </div>
-//             </motion.div>
-//           ))}
-//         </div>
-
-//         {/* Additional achievements note */}
-//         <motion.p
-//           initial={{ opacity: 0 }}
-//           animate={isInView ? { opacity: 1 } : {}}
-//           transition={{ duration: 0.6, delay: 0.5 }}
-//           className="text-center text-muted-foreground text-sm mt-8"
-//         >
-//           More certifications coming soon as I continue learning and growing.
-//         </motion.p>
-//       </div>
-//     </section>
-//   )
-// }

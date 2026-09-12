@@ -1,13 +1,11 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, Linkedin, Instagram, Twitter, Heart, ArrowUp } from "lucide-react"
+import { Github, Instagram, Heart, ArrowUp } from "lucide-react"
 
 const socialLinks = [
-  { icon: Github, label: "GitHub", href: "#" },
-  { icon: Linkedin, label: "LinkedIn", href: "#" },
-  { icon: Instagram, label: "Instagram", href: "#" },
-  { icon: Twitter, label: "Twitter", href: "#" },
+  { icon: Github, label: "GitHub", href: "https://github.com/ZainulRhmt24" },
+  { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/z4yn.rs" },
 ]
 
 const quickLinks = [

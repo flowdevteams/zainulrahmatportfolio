@@ -1,8 +1,8 @@
 "use client"
 
-import { motion, useInView } from "framer-motion"
-import { useRef, useState } from "react"
-import { ExternalLink, Github, ArrowRight, Layers, Code, Palette } from "lucide-react"
+import { motion } from "framer-motion"
+import { useState } from "react"
+import { ExternalLink, ArrowRight, Layers, Code, Palette } from "lucide-react"
 
 const projects = [
   {
@@ -13,7 +13,6 @@ const projects = [
     tags: ["Next.js", "Tailwind CSS", "Stripe", "PostgreSQL"],
     category: "Web App",
     link: "https://e-commerce-zeta-wine-86.vercel.app",
-    github: "#",
     featured: true,
   },
   {
@@ -24,7 +23,6 @@ const projects = [
     tags: ["React", "Tailwind CSS", "Framer Motion"],
     category: "Website",
     link: "https://companyprofile-tau.vercel.app",
-    github: "#",
     featured: true,
   },
   {
@@ -35,7 +33,6 @@ const projects = [
     tags: ["Next.js", "Chart.js", "Supabase"],
     category: "Web App",
     link: "https://business-dashboard-two-xi.vercel.app/",
-    github: "#",
     featured: true,
   },
   {
@@ -46,7 +43,6 @@ const projects = [
     tags: ["React", "Node.js", "MongoDB"],
     category: "Website",
     link: "https://restaurant-eight-orpin.vercel.app/",
-    github: "#",
     featured: true,
   },
   {
@@ -57,7 +53,7 @@ const projects = [
     tags: ["Figma", "UI/UX", "Prototyping"],
     category: "Design",
     link: "https://www.figma.com/make/QSBZOoTYEebd4HLzcDZRaj/E-Commerce-Mobile-App-UI?fullscreen=1&t=xlH9nMhsLVyCetVQ-1",
-    featured: true,
+    featured: false,
   },
   {
     title: "Landing Page",
@@ -67,15 +63,13 @@ const projects = [
     tags: ["Next.js", "Tailwind CSS", "SEO"],
     category: "Website",
     link: "https://flowbuild-nu.vercel.app",
-    featured: true,
+    featured: false,
   },
 ]
 
 const categories = ["All", "Web App", "Website", "Design"]
 
 export function ProjectsSection() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
   const [activeCategory, setActiveCategory] = useState("All")
 
   const filteredProjects =
@@ -84,23 +78,18 @@ export function ProjectsSection() {
       : projects.filter((p) => p.category === activeCategory)
 
   return (
-    <section id="projects" className="py-24 sm:py-32 px-6 relative">
-      <div className="container mx-auto max-w-6xl">
+    <section id="projects" className="py-24 sm:py-32 px-6 bg-background">
+      <div className="container mx-auto max-w-5xl">
         {/* Section Header */}
         <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mb-12"
         >
-          <span className="text-primary text-sm font-medium uppercase tracking-widest">
-            Portfolio
-          </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-4 mb-6">
-            Featured <span className="gradient-text">Projects</span>
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Featured Projects</h2>
+          <p className="text-muted-foreground text-lg max-w-2xl">
             A showcase of projects from Flowdev Teams, building digital solutions
             for businesses and individuals.
           </p>
@@ -109,18 +98,20 @@ export function ProjectsSection() {
         {/* Category Filter */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-3 mb-12"
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="flex flex-wrap gap-2 mb-10"
         >
           {categories.map((category) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === category
-                ? "bg-primary text-primary-foreground glow-cyan"
-                : "bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80"
-                }`}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                activeCategory === category
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-muted-foreground hover:bg-secondary/80"
+              }`}
             >
               {category}
             </button>
@@ -128,58 +119,53 @@ export function ProjectsSection() {
         </motion.div>
 
         {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 gap-8">
           {filteredProjects.map((project, index) => (
             <motion.div
               key={project.title}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
-              className={`group relative glass rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-500 ${project.featured ? "md:col-span-2 lg:col-span-1" : ""
-                }`}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
+              className="group flex flex-col rounded-xl border border-border bg-card overflow-hidden hover:border-primary/50 transition-colors"
             >
               <a
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block cursor-pointer"
+                className="flex flex-col h-full"
               >
                 {/* Project Image */}
                 <div
-                  className="relative h-52 overflow-hidden"
+                  className="relative h-60 w-full bg-secondary overflow-hidden border-b border-border"
                   style={{
                     backgroundImage: `url(${project.image})`,
                     backgroundSize: "cover",
                     backgroundPosition: "top center",
                   }}
                 >
-                  {/* Gradient overlays for premium blending */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-card/20 to-transparent" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
+                  <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300" />
+                  
                   {/* Category icon */}
-                  <div className="absolute top-4 left-4 p-3 rounded-xl glass z-10">
-                    {project.category === "Web App" && <Layers size={20} className="text-primary" />}
-                    {project.category === "Website" && <Code size={20} className="text-primary" />}
-                    {project.category === "Design" && <Palette size={20} className="text-primary" />}
+                  <div className="absolute top-4 left-4 p-2 rounded-md bg-background/80 backdrop-blur-sm border border-border">
+                    {project.category === "Web App" && <Layers size={16} className="text-foreground" />}
+                    {project.category === "Website" && <Code size={16} className="text-foreground" />}
+                    {project.category === "Design" && <Palette size={16} className="text-foreground" />}
                   </div>
 
-                  {/* View indicator on hover */}
-                  <div className="absolute bottom-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 z-10">
-                    <span className="p-2.5 rounded-lg glass hover:bg-primary/20 transition-colors">
-                      <ExternalLink size={18} />
-                    </span>
+                  <div className="absolute bottom-4 right-4 p-2 rounded-md bg-primary text-primary-foreground opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                    <ExternalLink size={16} />
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-medium text-primary uppercase tracking-wider">
+                <div className="p-6 flex flex-col flex-grow">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                       {project.category}
                     </span>
                     {project.featured && (
-                      <span className="px-2 py-1 rounded text-xs bg-accent/10 text-accent font-medium">
+                      <span className="px-2 py-0.5 rounded-sm text-[10px] uppercase font-bold bg-secondary text-foreground">
                         Featured
                       </span>
                     )}
@@ -188,16 +174,16 @@ export function ProjectsSection() {
                   <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-6 flex-grow">
                     {project.description}
                   </p>
 
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mt-auto">
                     {project.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2.5 py-1 rounded-md bg-secondary text-xs text-muted-foreground"
+                        className="px-2 py-1 rounded-sm bg-secondary text-xs font-medium text-secondary-foreground"
                       >
                         {tag}
                       </span>
@@ -212,16 +198,17 @@ export function ProjectsSection() {
         {/* View all projects CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="text-center mt-12"
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mt-16 text-center"
         >
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all duration-300"
+            className="inline-flex items-center gap-2 text-foreground font-medium hover:text-primary transition-colors"
           >
             Want something similar? Let&apos;s talk
-            <ArrowRight size={18} />
+            <ArrowRight size={16} />
           </a>
         </motion.div>
       </div>
