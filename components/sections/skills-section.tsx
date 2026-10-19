@@ -1,140 +1,190 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, useInView } from "framer-motion"
+import { useRef } from "react"
 import {
   Code2,
-  Layout,
   Paintbrush,
-  Smartphone,
-  Database,
-  Figma,
   Globe,
-  Sparkles,
+  Smartphone,
+  Bot,
+  Briefcase,
 } from "lucide-react"
 
-const skills = [
+const skillCategories = [
   {
-    category: "Development",
+    title: "Development",
     icon: Code2,
-    items: [
-      { name: "TypeScript", level: 90 },
-      { name: "JavaScript (JS)", level: 90 },
-      { name: "Django", level: 85 },
-      { name: "Tailwind CSS", level: 95 },
-      { name: "Bootstrap", level: 90 },
-      { name: "React/Next.js", level: 85 },
-    ],
+    items: ["TypeScript", "JavaScript", "React/Next.js", "Django", "Tailwind CSS", "Bootstrap"],
   },
   {
-    category: "Design",
+    title: "Design",
     icon: Paintbrush,
-    items: [
-      { name: "UI/UX Design", level: 88 },
-      { name: "Figma", level: 95 },
-      { name: "Canva", level: 95 },
-      { name: "Prototyping", level: 85 },
-      { name: "Brand Design", level: 75 },
-    ],
+    items: ["UI/UX Design", "Figma", "Canva", "Prototyping", "Brand Design"],
   },
 ]
 
-const technologies = [
-  { name: "TypeScript", icon: Code2 },
-  { name: "JavaScript", icon: Code2 },
-  { name: "Django", icon: Database },
-  { name: "Tailwind CSS", icon: Layout },
-  { name: "Bootstrap", icon: Layout },
-  { name: "Figma", icon: Figma },
-  { name: "Canva", icon: Paintbrush },
-  { name: "Next.js", icon: Globe },
+const services = [
+  {
+    icon: Globe,
+    title: "Website Development",
+    desc: "Custom websites built with modern tech stack",
+  },
+  {
+    icon: Smartphone,
+    title: "App Development",
+    desc: "Full-stack web & mobile applications",
+  },
+  {
+    icon: Bot,
+    title: "AI Engineering",
+    desc: "AI chatbots & process automation",
+  },
+  {
+    icon: Briefcase,
+    title: "Business Solutions",
+    desc: "E-commerce, dashboards & analytics",
+  },
 ]
 
 export function SkillsSection() {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, amount: 0.2 })
+
   return (
-    <section id="skills" className="py-24 sm:py-32 px-6 bg-background">
-      <div className="container mx-auto max-w-5xl">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Skills & Technologies</h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
-            A combination of development expertise and design skills to create
-            complete digital solutions.
-          </p>
-        </motion.div>
+    <section id="skills" className="fullpage-section relative flex items-center" ref={ref}>
+      <div className="w-full px-8 md:px-16 lg:px-24 py-16 overflow-y-auto max-h-[100dvh]">
+        <div className="max-w-screen-xl mx-auto">
+          {/* Title */}
+          <motion.h2
+            className="section-title text-[clamp(2.5rem,7vw,6rem)] leading-[0.95] mb-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7 }}
+          >
+            Skills &
+            <br />
+            Services
+          </motion.h2>
 
-        {/* Skills Grid */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-16">
-          {skills.map((skillGroup, groupIndex) => (
-            <motion.div
-              key={skillGroup.category}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: groupIndex * 0.1 }}
-              className="border border-border rounded-xl p-8 bg-card"
-            >
-              <div className="flex items-center gap-4 mb-8">
-                <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center">
-                  <skillGroup.icon size={24} className="text-foreground" />
-                </div>
-                <h3 className="text-2xl font-bold text-foreground">{skillGroup.category}</h3>
-              </div>
+          <motion.div
+            className="deco-line mb-10"
+            initial={{ opacity: 0, x: -20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <span></span>
+            <span></span>
+          </motion.div>
 
-              <div className="space-y-6">
-                {skillGroup.items.map((skill, index) => (
-                  <div key={skill.name}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-foreground">{skill.name}</span>
-                      <span className="text-sm text-muted-foreground">{skill.level}%</span>
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
+            {/* Skills */}
+            <div className="space-y-8">
+              {skillCategories.map((category, catIndex) => (
+                <motion.div
+                  key={category.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.4 + catIndex * 0.15 }}
+                >
+                  <div className="flex items-center gap-3 mb-4">
+                    <category.icon size={18} className="text-muted-foreground" />
+                    <h3 className="text-base font-semibold text-foreground tracking-wide uppercase text-sm">
+                      {category.title}
+                    </h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {category.items.map((skill) => (
+                      <span
+                        key={skill}
+                        className="px-3 py-1.5 text-xs font-medium border border-border/40 rounded bg-card/30 backdrop-blur-sm text-foreground/80 hover:border-foreground/30 hover:text-foreground transition-colors cursor-default"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+
+              {/* Stats */}
+              <motion.div
+                className="flex gap-12 pt-6 border-t border-border/30"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.7 }}
+              >
+                {[
+                  { value: "3+", label: "Years" },
+                  { value: "20+", label: "Projects" },
+                  { value: "15+", label: "Clients" },
+                ].map((stat) => (
+                  <div key={stat.label}>
+                    <div className="text-2xl md:text-3xl font-display" style={{ fontFamily: "var(--font-display)" }}>
+                      {stat.value}
                     </div>
-                    <div className="h-2 rounded-full bg-secondary overflow-hidden">
-                      <motion.div
-                        className="h-full rounded-full bg-primary"
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: 0.2 + index * 0.1, ease: "easeOut" }}
-                      />
+                    <div className="text-xs text-muted-foreground mt-1 uppercase tracking-wider">
+                      {stat.label}
                     </div>
                   </div>
                 ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+              </motion.div>
+            </div>
 
-        {/* Technologies Grid */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <h3 className="text-xl font-bold text-center mb-8 text-foreground">Technologies I Work With</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4">
-            {technologies.map((tech) => (
-              <div
-                key={tech.name}
-                className="border border-border bg-card rounded-xl p-4 flex flex-col items-center gap-3 hover:border-primary/50 transition-colors group cursor-default"
+            {/* Services */}
+            <div className="space-y-4">
+              <motion.h3
+                className="text-sm font-semibold text-muted-foreground tracking-widest uppercase mb-6"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.5 }}
               >
-                <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                  <tech.icon size={20} className="text-foreground group-hover:text-primary transition-colors" />
-                </div>
-                <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors">
-                  {tech.name}
-                </span>
-              </div>
-            ))}
+                What I Offer
+              </motion.h3>
+
+              {services.map((service, index) => (
+                <motion.div
+                  key={service.title}
+                  className="group flex items-start gap-4 p-5 rounded-lg border border-border/30 bg-card/20 backdrop-blur-sm hover:border-border/50 transition-all duration-300"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
+                >
+                  <div className="w-10 h-10 rounded-lg bg-secondary/40 flex items-center justify-center shrink-0 group-hover:bg-primary/10 transition-colors">
+                    <service.icon size={18} className="text-muted-foreground group-hover:text-primary transition-colors" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-foreground mb-1">{service.title}</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{service.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+
+              {/* Flowdev CTA */}
+              <motion.a
+                href="https://flowdevteams.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block mt-6 p-5 rounded-lg border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-colors group"
+                initial={{ opacity: 0, y: 15 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.4, delay: 0.9 }}
+              >
+                <p className="text-xs uppercase tracking-widest text-primary/80 mb-1 font-medium">
+                  Official Business
+                </p>
+                <p className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                  Visit Flowdev Teams →
+                </p>
+              </motion.a>
+            </div>
           </div>
-        </motion.div>
+        </div>
+      </div>
+
+      {/* Page Number */}
+      <div className="page-num" aria-hidden="true">
+        03
       </div>
     </section>
   )
 }
-

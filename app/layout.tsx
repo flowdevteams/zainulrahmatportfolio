@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, JetBrains_Mono } from 'next/font/google'
+import { Inter, JetBrains_Mono, Abril_Fatface } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
@@ -11,6 +11,12 @@ const inter = Inter({
 const jetbrainsMono = JetBrains_Mono({ 
   subsets: ["latin"],
   variable: '--font-jetbrains',
+});
+
+const abrilFatface = Abril_Fatface({
+  weight: '400',
+  subsets: ["latin"],
+  variable: '--font-display',
 });
 
 export const metadata: Metadata = {
@@ -39,7 +45,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0a0a12',
+  themeColor: '#0a0a18',
   width: 'device-width',
   initialScale: 1,
 }
@@ -51,7 +57,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased overflow-x-hidden`}>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} ${abrilFatface.variable} font-sans antialiased overflow-x-hidden`}>
         {children}
         <Analytics />
       </body>

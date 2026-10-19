@@ -1,48 +1,21 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { useState } from "react"
+import { motion, useInView } from "framer-motion"
+import { useRef, useState } from "react"
 import {
   Mail,
-  MapPin,
-  Phone,
-  Send,
   Github,
-  Linkedin,
   Instagram,
-  Twitter,
-  ArrowRight,
+  Send,
   Loader2,
   CheckCircle2,
+  Heart,
+  ArrowUp,
 } from "lucide-react"
 
-const contactInfo = [
-  {
-    icon: Mail,
-    label: "Email",
-    value: "zainulrhmt368@gmail.com",
-    href: "mailto:zainulrhmt368@gmail.com",
-  },
-  {
-    icon: MapPin,
-    label: "Location",
-    value: "Bekasi, Indonesia",
-    href: "#",
-  },
-  {
-    icon: Phone,
-    label: "Phone",
-    value: "+62 xxx xxxx xxxx",
-    href: "https://wa.me/6287709165697",
-  },
-]
-
-const socialLinks = [
-  { icon: Github, label: "GitHub", href: "https://github.com/ZainulRhmt24" },
-  { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/z4yn.rs" },
-]
-
 export function ContactSection() {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, amount: 0.3 })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
 
@@ -73,7 +46,7 @@ export function ContactSection() {
         formElement.reset()
         setTimeout(() => setIsSubmitted(false), 3000)
       } else {
-        alert("Failed to send message. Please ensure your email server is configured properly.")
+        alert("Failed to send message. Please try again.")
       }
     } catch (error) {
       console.error(error)
@@ -83,180 +56,214 @@ export function ContactSection() {
     }
   }
 
+  const scrollToTop = () => {
+    const container = document.querySelector(".fullpage-container")
+    if (container) {
+      container.scrollTo({ top: 0, behavior: "smooth" })
+    }
+  }
+
   return (
-    <section id="contact" className="py-24 sm:py-32 px-6 bg-background">
-      <div className="container mx-auto max-w-5xl">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-16"
-        >
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">Let&apos;s Connect</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl leading-relaxed">
-            Have a project in mind or just want to chat? I&apos;d love to hear from you.
-            Let&apos;s build something amazing together.
-          </p>
-        </motion.div>
+    <section id="contact" className="fullpage-section relative flex items-center" ref={ref}>
+      <div className="w-full px-8 md:px-16 lg:px-24 py-16 overflow-y-auto max-h-[100dvh]">
+        <div className="max-w-screen-xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
+            {/* Left - Title & Contact Info */}
+            <div className="flex flex-col justify-center">
+              <motion.h2
+                className="section-title text-[clamp(2.5rem,7vw,6rem)] leading-[0.95] mb-6"
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.7 }}
+              >
+                Get In
+                <br />
+                Touch
+              </motion.h2>
 
-        <div className="grid lg:grid-cols-5 gap-12">
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="lg:col-span-3 border border-border rounded-xl p-8 bg-card"
-          >
-            <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
+              <motion.div
+                className="deco-line mb-8"
+                initial={{ opacity: 0, x: -20 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                <span></span>
+                <span></span>
+              </motion.div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-6">
+              {/* Contact Links */}
+              <div className="space-y-4">
+                <motion.a
+                  href="mailto:zainulrhmt368@gmail.com"
+                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.4, delay: 0.5 }}
+                >
+                  <Mail size={16} className="group-hover:text-primary transition-colors" />
+                  <span className="text-sm">zainulrhmt368@gmail.com</span>
+                </motion.a>
+
+                <motion.a
+                  href="https://wa.me/6287709165697"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.4, delay: 0.6 }}
+                >
+                  <Send size={16} className="group-hover:text-primary transition-colors" />
+                  <span className="text-sm">WhatsApp</span>
+                </motion.a>
+              </div>
+
+              {/* Social */}
+              <motion.div
+                className="flex items-center gap-4 mt-8"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.4, delay: 0.7 }}
+              >
+                <a
+                  href="https://github.com/ZainulRhmt24"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-all"
+                  aria-label="GitHub"
+                >
+                  <Github size={16} />
+                </a>
+                <a
+                  href="https://www.instagram.com/z4yn.rs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full border border-border/40 flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-all"
+                  aria-label="Instagram"
+                >
+                  <Instagram size={16} />
+                </a>
+              </motion.div>
+
+              {/* Footer info */}
+              <motion.div
+                className="mt-12 pt-8 border-t border-border/20"
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
+                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                  Made with <Heart size={12} className="text-red-400/80" /> by Zainul Rahmat Saputra
+                </p>
+                <p className="text-xs text-muted-foreground/60 mt-1">
+                  &copy; {new Date().getFullYear()} All rights reserved.
+                </p>
+
+                <button
+                  onClick={scrollToTop}
+                  className="mt-4 flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors uppercase tracking-widest"
+                >
+                  <ArrowUp size={12} />
+                  Back to top
+                </button>
+              </motion.div>
+            </div>
+
+            {/* Right - Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <div>
+                    <label htmlFor="contact-name" className="block text-xs font-medium mb-2 text-muted-foreground uppercase tracking-wider">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="contact-name"
+                      name="name"
+                      required
+                      className="w-full px-0 py-3 bg-transparent border-0 border-b border-border/40 focus:border-foreground focus:outline-none transition-colors text-foreground text-sm placeholder:text-muted-foreground/50"
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="contact-email" className="block text-xs font-medium mb-2 text-muted-foreground uppercase tracking-wider">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      id="contact-email"
+                      name="email"
+                      required
+                      className="w-full px-0 py-3 bg-transparent border-0 border-b border-border/40 focus:border-foreground focus:outline-none transition-colors text-foreground text-sm placeholder:text-muted-foreground/50"
+                      placeholder="your@email.com"
+                    />
+                  </div>
+                </div>
+
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2 text-foreground">
-                    Name
+                  <label htmlFor="contact-subject" className="block text-xs font-medium mb-2 text-muted-foreground uppercase tracking-wider">
+                    Subject
                   </label>
                   <input
                     type="text"
-                    id="name"
-                    name="name"
+                    id="contact-subject"
+                    name="subject"
                     required
-                    className="w-full px-4 py-3 rounded-md bg-secondary/50 border border-border focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors text-foreground placeholder:text-muted-foreground"
-                    placeholder="Your name"
+                    className="w-full px-0 py-3 bg-transparent border-0 border-b border-border/40 focus:border-foreground focus:outline-none transition-colors text-foreground text-sm placeholder:text-muted-foreground/50"
+                    placeholder="Project inquiry"
                   />
                 </div>
+
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2 text-foreground">
-                    Email
+                  <label htmlFor="contact-message" className="block text-xs font-medium mb-2 text-muted-foreground uppercase tracking-wider">
+                    Message
                   </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    rows={4}
                     required
-                    className="w-full px-4 py-3 rounded-md bg-secondary/50 border border-border focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors text-foreground placeholder:text-muted-foreground"
-                    placeholder="your@email.com"
+                    className="w-full px-0 py-3 bg-transparent border-0 border-b border-border/40 focus:border-foreground focus:outline-none transition-colors resize-none text-foreground text-sm placeholder:text-muted-foreground/50"
+                    placeholder="Tell me about your project..."
                   />
                 </div>
-              </div>
 
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium mb-2 text-foreground">
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  required
-                  className="w-full px-4 py-3 rounded-md bg-secondary/50 border border-border focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors text-foreground placeholder:text-muted-foreground"
-                  placeholder="Project inquiry"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2 text-foreground">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  required
-                  className="w-full px-4 py-3 rounded-md bg-secondary/50 border border-border focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors resize-none text-foreground placeholder:text-muted-foreground"
-                  placeholder="Tell me about your project..."
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting || isSubmitted}
-                className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-md bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 size={18} className="animate-spin" />
-                    Sending...
-                  </>
-                ) : isSubmitted ? (
-                  <>
-                    <CheckCircle2 size={18} />
-                    Message Sent!
-                  </>
-                ) : (
-                  <>
-                    <Send size={18} />
-                    Send Message
-                  </>
-                )}
-              </button>
-            </form>
-          </motion.div>
-
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="lg:col-span-2 space-y-8"
-          >
-            {/* Info Cards */}
-            <div className="space-y-4">
-              {contactInfo.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="flex items-center gap-4 p-5 rounded-xl border border-border bg-card hover:border-primary/50 transition-colors group"
+                <button
+                  type="submit"
+                  disabled={isSubmitting || isSubmitted}
+                  className="btn-kuon mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                    <item.icon size={20} className="text-foreground group-hover:text-primary transition-colors" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">{item.label}</p>
-                    <p className="font-medium text-foreground">
-                      {item.value}
-                    </p>
-                  </div>
-                </a>
-              ))}
-            </div>
-
-            {/* Social Links */}
-            <div className="border border-border rounded-xl p-6 bg-card">
-              <h4 className="font-semibold mb-4 text-foreground">Follow Me</h4>
-              <div className="flex gap-3">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    className="w-10 h-10 rounded-md bg-secondary flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
-                    aria-label={social.label}
-                  >
-                    <social.icon size={18} />
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            {/* CTA Card */}
-            <div className="border border-border rounded-xl p-6 bg-secondary/30">
-              <h4 className="font-semibold mb-2 text-foreground">Need a Website?</h4>
-              <p className="text-sm text-muted-foreground mb-4">
-                Let Flowdev Teams help you build a stunning online presence for your business.
-              </p>
-              <a
-                href="#services"
-                className="inline-flex items-center gap-2 text-foreground text-sm font-medium hover:text-primary transition-colors"
-              >
-                View Services
-                <ArrowRight size={16} />
-              </a>
-            </div>
-          </motion.div>
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Sending...
+                    </>
+                  ) : isSubmitted ? (
+                    <>
+                      <CheckCircle2 size={16} />
+                      Sent!
+                    </>
+                  ) : (
+                    <>
+                      <Send size={16} />
+                      Send Message
+                    </>
+                  )}
+                </button>
+              </form>
+            </motion.div>
+          </div>
         </div>
+      </div>
+
+      {/* Page Number */}
+      <div className="page-num" aria-hidden="true">
+        04
       </div>
     </section>
   )
