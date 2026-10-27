@@ -1,123 +1,164 @@
 "use client"
 
-import { motion } from "framer-motion"
-import Image from "next/image"
+import { motion, useScroll, useTransform } from "framer-motion"
+import { useRef } from "react"
 
 export function HeroSection() {
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  })
+
+  const moonY = useTransform(scrollYProgress, [0, 1], [0, -80])
+  const cloudX1 = useTransform(scrollYProgress, [0, 1], [0, 60])
+  const cloudX2 = useTransform(scrollYProgress, [0, 1], [0, -40])
+  const starsOpacity = useTransform(scrollYProgress, [0, 0.5], [0.6, 0.2])
+
+  const letterVariants = {
+    hidden: { y: 100, opacity: 0 },
+    visible: (i: number) => ({
+      y: 0,
+      opacity: 1,
+      transition: {
+        delay: 0.5 + i * 0.05,
+        duration: 0.8,
+        ease: [0.215, 0.61, 0.355, 1],
+      },
+    }),
+  }
+
+  const nameLetters = "ZAINUL".split("")
+  const lastNameLetters = "RAHMAT".split("")
+
   return (
-    <section id="top" className="fullpage-section relative flex items-center justify-center">
-      {/* Moon */}
+    <section
+      ref={sectionRef}
+      id="top"
+      className="fullpage-section sky-bg"
+    >
+      {/* Stars background */}
       <motion.div
-        className="absolute right-[-5%] md:right-[5%] top-[10%] md:top-[5%] w-[50vw] md:w-[35vw] max-w-[500px] aspect-square z-[2]"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
+        className="stars-layer"
+        style={{ opacity: starsOpacity }}
       >
-        <div className="moon-glow w-full h-full relative">
-          <Image
-            src="/moon.png"
-            alt="Moon"
-            fill
-            className="object-contain"
-            priority
-          />
-          {/* PORTFOLIO text orbiting the moon */}
-          <motion.p
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[clamp(1rem,3vw,2.5rem)] font-display tracking-[0.3em] text-white/20 pointer-events-none select-none whitespace-nowrap"
-            style={{ fontFamily: "var(--font-display)" }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1 }}
+        <img
+          src="/stars.png"
+          alt=""
+          className="w-full h-full object-cover"
+          aria-hidden="true"
+        />
+      </motion.div>
+
+      {/* Moon with parallax */}
+      <motion.div
+        className="moon-wrapper z-[1]"
+        style={{ y: moonY }}
+      >
+        <div className="moon-glow" />
+        <img
+          src="/moon-hero.png"
+          alt="Moon"
+          className="moon-img"
+        />
+        {/* PORTFOLIO text overlaying moon */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.span
+            className="font-display text-[clamp(1.5rem,4vw,3.5rem)] text-white/10 tracking-[0.3em] select-none"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.5, duration: 1 }}
           >
             PORTFOLIO
-          </motion.p>
+          </motion.span>
         </div>
       </motion.div>
 
-      {/* Clouds */}
-      <div className="absolute inset-0 pointer-events-none z-[3]">
-        {/* Cloud 1 */}
-        <div className="cloud-1 absolute bottom-[15%] left-[-5%] w-[40vw] max-w-[400px] opacity-20">
-          <svg viewBox="0 0 800 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="400" cy="200" rx="380" ry="80" fill="url(#cloud1)" />
-            <ellipse cx="300" cy="160" rx="200" ry="100" fill="url(#cloud1)" />
-            <ellipse cx="500" cy="170" rx="180" ry="90" fill="url(#cloud1)" />
-            <defs>
-              <linearGradient id="cloud1" x1="0" y1="0" x2="800" y2="300">
-                <stop stopColor="rgba(200,210,230,0.4)" />
-                <stop offset="1" stopColor="rgba(200,210,230,0.1)" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
+      {/* Clouds with parallax */}
+      <motion.div className="cloud cloud--1 z-[2]" style={{ x: cloudX1 }}>
+        <img src="/cloud.png" alt="" className="w-full opacity-40" aria-hidden="true" />
+      </motion.div>
+      <motion.div className="cloud cloud--2 z-[2]" style={{ x: cloudX2 }}>
+        <img src="/cloud.png" alt="" className="w-full opacity-30 scale-x-[-1]" aria-hidden="true" />
+      </motion.div>
+      <motion.div className="cloud cloud--3 z-[2]" style={{ x: cloudX1 }}>
+        <img src="/cloud.png" alt="" className="w-full opacity-20" aria-hidden="true" />
+      </motion.div>
 
-        {/* Cloud 2 */}
-        <div className="cloud-2 absolute top-[20%] right-[-10%] w-[35vw] max-w-[350px] opacity-15">
-          <svg viewBox="0 0 600 250" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="300" cy="150" rx="280" ry="70" fill="rgba(200,210,230,0.3)" />
-            <ellipse cx="220" cy="120" rx="150" ry="80" fill="rgba(200,210,230,0.2)" />
-            <ellipse cx="400" cy="130" rx="140" ry="70" fill="rgba(200,210,230,0.2)" />
-          </svg>
-        </div>
+      {/* Title Content */}
+      <div className="relative z-[10] px-6 sm:px-10 lg:px-20 max-w-[1400px] mx-auto w-full">
+        <div className="max-w-2xl">
+          {/* Name - Letter by Letter */}
+          <div className="title-reveal mb-2">
+            <h1 className="font-display text-[clamp(3.5rem,10vw,8rem)] leading-[0.95] text-foreground">
+              <span className="block overflow-hidden">
+                {nameLetters.map((letter, i) => (
+                  <motion.span
+                    key={`first-${i}`}
+                    custom={i}
+                    variants={letterVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="inline-block"
+                  >
+                    {letter}
+                  </motion.span>
+                ))}
+              </span>
+              <span className="block overflow-hidden">
+                {lastNameLetters.map((letter, i) => (
+                  <motion.span
+                    key={`last-${i}`}
+                    custom={i + nameLetters.length}
+                    variants={letterVariants}
+                    initial="hidden"
+                    animate="visible"
+                    className="inline-block"
+                  >
+                    {letter}
+                  </motion.span>
+                ))}
+              </span>
+            </h1>
+          </div>
 
-        {/* Cloud 3 */}
-        <div className="cloud-3 absolute bottom-[5%] right-[10%] w-[30vw] max-w-[300px] opacity-10">
-          <svg viewBox="0 0 500 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="250" cy="120" rx="230" ry="60" fill="rgba(200,210,230,0.3)" />
-            <ellipse cx="180" cy="90" rx="120" ry="70" fill="rgba(200,210,230,0.2)" />
-          </svg>
+          {/* Divider */}
+          <motion.div
+            className="section-border"
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ delay: 1.2, duration: 0.8, ease: "easeOut" }}
+            style={{ transformOrigin: "left" }}
+          >
+            <span></span>
+            <span></span>
+          </motion.div>
+
+          {/* Subtitle */}
+          <motion.p
+            className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-md"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.4, duration: 0.6 }}
+          >
+            web developer /<br />
+            entrepreneur.
+          </motion.p>
         </div>
       </div>
 
-      {/* Main Title */}
-      <div className="relative z-[5] flex flex-col items-start px-8 md:px-16 lg:px-24 w-full max-w-screen-xl">
-        <motion.h1
-          className="section-title text-[clamp(3rem,10vw,9rem)] leading-[0.95] mb-6"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-        >
-          ZAINUL
-          <br />
-          RAHMAT
-        </motion.h1>
-
-        {/* Decorative line */}
-        <motion.div
-          className="deco-line mb-6"
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-        >
-          <span></span>
-          <span></span>
-        </motion.div>
-
-        {/* Subtitle */}
-        <motion.p
-          className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-sm tracking-wide"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.9 }}
-        >
-          web developer /
-          <br />
-          entrepreneur.
-        </motion.p>
-      </div>
-
-      {/* Scroll Down Indicator */}
+      {/* Scroll down indicator */}
       <motion.div
         className="scroll-indicator"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
+        transition={{ delay: 2, duration: 0.8 }}
       >
-        <span>SCROLLDOWN</span>
+        SCROLL DOWN
       </motion.div>
 
       {/* Page Number */}
-      <div className="page-num" aria-hidden="true">
+      <div className="page-number" aria-hidden="true">
         00
       </div>
     </section>

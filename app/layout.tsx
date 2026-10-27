@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, JetBrains_Mono, Abril_Fatface } from 'next/font/google'
+import { Inter, Abril_Fatface } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
@@ -8,23 +8,18 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const jetbrainsMono = JetBrains_Mono({ 
-  subsets: ["latin"],
-  variable: '--font-jetbrains',
-});
-
 const abrilFatface = Abril_Fatface({
   weight: '400',
   subsets: ["latin"],
-  variable: '--font-display',
+  variable: '--font-abril',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Zainul Rahmat Saputra | Web Developer & Designer',
-  description: 'Portfolio of Zainul Rahmat Saputra - Web Developer, UI Designer, and Entrepreneur. Founder of Flowdev Teams, building stunning websites and applications.',
+  title: 'Zainul Rahmat | Portfolio',
+  description: 'Portfolio of Zainul Rahmat Saputra — Web Developer, Designer & Entrepreneur. Founder of Flowdev Teams.',
   keywords: ['Web Developer', 'UI Designer', 'Portfolio', 'Flowdev Teams', 'Next.js', 'React'],
   authors: [{ name: 'Zainul Rahmat Saputra' }],
-  generator: 'v0.app',
   icons: {
     icon: [
       { url: '/favicon.ico' },
@@ -45,7 +40,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0a0a18',
+  themeColor: '#0b0e1a',
   width: 'device-width',
   initialScale: 1,
 }
@@ -57,7 +52,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} ${jetbrainsMono.variable} ${abrilFatface.variable} font-sans antialiased overflow-x-hidden`}>
+      <body className={`${inter.variable} ${abrilFatface.variable} font-sans antialiased overflow-x-hidden`}>
         {children}
         <Analytics />
       </body>

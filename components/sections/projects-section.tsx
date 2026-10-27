@@ -1,173 +1,234 @@
 "use client"
 
 import { motion, useInView } from "framer-motion"
-import { useRef, useState } from "react"
-import { ExternalLink, ArrowRight } from "lucide-react"
+import { useRef } from "react"
+import { ArrowRight, Monitor } from "lucide-react"
 
-const projects = [
+interface Project {
+  title: string
+  subtitle: string
+  image: string
+  link: string
+  num: string
+  description?: string
+  secondaryImage?: string
+  secondaryLabel?: string
+}
+
+const projects: Project[] = [
+  {
+    title: "Denken\nShowroom",
+    subtitle: "website",
+    image: "/projects/denken.png",
+    link: "https://showroom-os-wktd.vercel.app/jakarta",
+    num: "01",
+    description: "A modern vehicle showroom platform with interactive catalog, location-based filtering, and seamless user experience.",
+    secondaryImage: "/projects/admin_denken.png",
+    secondaryLabel: "Admin Dashboard",
+  },
+  {
+    title: "Admin\nDenken",
+    subtitle: "admin dashboard",
+    image: "/projects/admin_denken.png",
+    link: "https://showroom-os-wktd.vercel.app/jakarta",
+    num: "02",
+    description: "Full-featured admin panel for managing showroom inventory, orders, user data, and analytics.",
+  },
   {
     title: "E-Commerce\nPlatform",
-    description: "A modern e-commerce solution with real-time inventory, secure payments, and an intuitive admin dashboard.",
+    subtitle: "website / web app",
     image: "/projects/e-commerce.png",
-    tags: ["Next.js", "Tailwind CSS", "Stripe"],
     link: "https://e-commerce-zeta-wine-86.vercel.app",
+    num: "03",
   },
   {
     title: "Company\nProfile",
-    description: "Stunning company profile websites for creative professionals with smooth animations and modern design.",
+    subtitle: "website",
     image: "/projects/company_profile.png",
-    tags: ["React", "Tailwind CSS", "Framer Motion"],
     link: "https://companyprofile-tau.vercel.app",
+    num: "04",
   },
   {
     title: "Business\nDashboard",
-    description: "Analytics dashboard for small businesses to track sales, inventory, and customer insights.",
+    subtitle: "web application",
     image: "/projects/business_dashboard.png",
-    tags: ["Next.js", "Chart.js", "Supabase"],
     link: "https://business-dashboard-two-xi.vercel.app/",
+    num: "05",
   },
   {
     title: "Restaurant\nWebsite",
-    description: "Beautiful restaurant website with online menu, reservation system, and delivery integration.",
+    subtitle: "website",
     image: "/projects/restaurant.png",
-    tags: ["React", "Node.js", "MongoDB"],
     link: "https://restaurant-eight-orpin.vercel.app/",
+    num: "06",
   },
 ]
 
-export function ProjectsSection() {
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null)
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.3 })
+function ProjectSlide({ project }: { project: Project; index: number }) {
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
-    <section id="works" className="fullpage-section relative flex items-center" ref={ref}>
-      <div className="w-full h-full grid md:grid-cols-2 items-center px-8 md:px-16 lg:px-24 gap-8 md:gap-16">
-        {/* Left Side - Title */}
-        <div className="flex flex-col justify-center z-10">
+    <section
+      ref={ref}
+      className="fullpage-section sky-bg"
+    >
+      {/* Left side: Title */}
+      <div className="relative z-10 flex flex-col lg:flex-row items-center w-full h-full px-6 sm:px-10 lg:px-20 max-w-[1400px] mx-auto gap-8 lg:gap-16">
+        <div className="flex-1 flex flex-col justify-center order-2 lg:order-1">
+          {/* Title */}
           <motion.h2
-            className="section-title text-[clamp(2.5rem,7vw,6rem)] leading-[0.95] mb-6"
-            initial={{ opacity: 0, y: 30 }}
+            className="font-display text-[clamp(2.5rem,6vw,5rem)] leading-[1] text-foreground whitespace-pre-line"
+            initial={{ opacity: 0, y: 60 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
           >
-            Featured
-            <br />
-            Works
+            {project.title}
           </motion.h2>
 
+          {/* Divider */}
           <motion.div
-            className="deco-line mb-6"
-            initial={{ opacity: 0, x: -20 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.3 }}
+            className="section-border"
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            style={{ transformOrigin: "left" }}
           >
             <span></span>
             <span></span>
           </motion.div>
 
+          {/* Subtitle */}
           <motion.p
-            className="text-muted-foreground text-sm md:text-base max-w-sm leading-relaxed mb-8"
+            className="text-muted-foreground text-sm sm:text-base tracking-wider"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
           >
-            Projects built through Flowdev Teams — digital solutions for businesses and individuals.
+            {project.subtitle}
           </motion.p>
 
-          {/* Project list */}
-          <div className="space-y-4">
-            {projects.map((project, index) => (
-              <motion.a
-                key={project.title}
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-4 py-3 border-b border-border/30 hover:border-foreground/30 transition-all duration-300 cursor-pointer"
-                initial={{ opacity: 0, x: -20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
-                onMouseEnter={() => setHoveredProject(index)}
-                onMouseLeave={() => setHoveredProject(null)}
-              >
-                <span className="text-xs text-muted-foreground font-mono w-8">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="text-foreground font-medium text-sm md:text-base group-hover:text-primary transition-colors flex-1">
-                  {project.title.replace("\n", " ")}
-                </span>
-                <ArrowRight
-                  size={16}
-                  className="text-muted-foreground group-hover:text-foreground group-hover:translate-x-1 transition-all"
-                />
-              </motion.a>
-            ))}
-          </div>
+          {/* Description (optional) */}
+          {project.description && (
+            <motion.p
+              className="text-muted-foreground/80 text-sm leading-relaxed max-w-md mt-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.6, duration: 0.5 }}
+            >
+              {project.description}
+            </motion.p>
+          )}
+
+          {/* CTA Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.7, duration: 0.5 }}
+            className="mt-8"
+          >
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-show-more"
+            >
+              Show me more
+              <ArrowRight size={16} />
+            </a>
+          </motion.div>
         </div>
 
-        {/* Right Side - Preview Image */}
-        <motion.div
-          className="relative hidden md:flex items-center justify-center h-full"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
-          <div className="relative w-full max-w-lg aspect-[4/3] rounded-lg overflow-hidden">
-            {/* Image reveal effect */}
-            {projects.map((project, index) => (
+        {/* Right side: Project Image with Cover Reveal */}
+        <div className="flex-1 flex justify-center items-center order-1 lg:order-2 w-full max-w-xl relative">
+          <motion.a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="image-reveal relative w-full aspect-[4/3] rounded-sm overflow-hidden group cursor-pointer"
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            {/* The image */}
+            <motion.div
+              className="absolute inset-0"
+              initial={{ scale: 1.2 }}
+              animate={isInView ? { scale: 1 } : {}}
+              transition={{ delay: 0.5, duration: 1.2, ease: [0.215, 0.61, 0.355, 1] }}
+            >
+              <img
+                src={project.image}
+                alt={project.title.replace("\n", " ")}
+                className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+              />
+            </motion.div>
+
+            {/* Cover reveal animation */}
+            <div className="image-reveal__cover">
               <motion.div
-                key={project.title}
-                className="absolute inset-0 rounded-lg overflow-hidden"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: hoveredProject === index ? 1 : index === 0 && hoveredProject === null ? 0.7 : 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div
-                  className="w-full h-full bg-cover bg-top"
-                  style={{ backgroundImage: `url(${project.image})` }}
+                initial={{ scaleX: 1 }}
+                animate={isInView ? { scaleX: 0 } : {}}
+                transition={{ delay: 0.3, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                style={{ transformOrigin: "right" }}
+              />
+              <motion.div
+                initial={{ scaleX: 1 }}
+                animate={isInView ? { scaleX: 0 } : {}}
+                transition={{ delay: 0.5, duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                style={{ transformOrigin: "left" }}
+              />
+            </div>
+
+            {/* Page number overlay */}
+            <div className="absolute bottom-4 right-4 font-display text-5xl text-white/10 select-none pointer-events-none">
+              {project.num}
+            </div>
+          </motion.a>
+
+          {/* Secondary Image - floating admin preview */}
+          {project.secondaryImage && (
+            <motion.div
+              className="absolute -bottom-6 -left-6 lg:-bottom-8 lg:-left-8 z-10 w-[45%] max-w-[220px]"
+              initial={{ opacity: 0, y: 30, scale: 0.9 }}
+              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ delay: 1, duration: 0.6, ease: [0.215, 0.61, 0.355, 1] }}
+            >
+              <div className="relative rounded-sm overflow-hidden border border-[var(--gold)]/30 shadow-2xl shadow-black/40 group/admin">
+                <img
+                  src={project.secondaryImage}
+                  alt={project.secondaryLabel || "Admin Dashboard"}
+                  className="w-full h-auto object-cover group-hover/admin:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
-                
-                {/* Project info overlay */}
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2 py-1 text-[10px] uppercase tracking-wider bg-background/40 backdrop-blur-sm border border-border/30 rounded text-foreground/80"
-                      >
-                        {tag}
-                      </span>
-                    ))}
+                {/* Label badge */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-3 py-2">
+                  <div className="flex items-center gap-1.5">
+                    <Monitor size={12} className="text-[var(--gold)]" />
+                    <span className="text-[10px] sm:text-xs font-medium text-[var(--text-cream)] tracking-wider uppercase">
+                      {project.secondaryLabel}
+                    </span>
                   </div>
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-foreground/80 hover:text-foreground transition-colors"
-                  >
-                    View Project <ExternalLink size={12} />
-                  </a>
                 </div>
-              </motion.div>
-            ))}
-
-            {/* Default state - shows first project faded */}
-            {hoveredProject === null && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-muted-foreground text-sm tracking-wider uppercase opacity-50">
-                  Hover to preview
-                </p>
               </div>
-            )}
-          </div>
+            </motion.div>
+          )}
+        </div>
+      </div>
 
-          {/* Page number */}
-          <div className="page-num" aria-hidden="true">
-            01
-          </div>
-        </motion.div>
+      {/* Page Number watermark */}
+      <div className="page-number" aria-hidden="true">
+        {project.num}
       </div>
     </section>
+  )
+}
+
+export function ProjectsSection() {
+  return (
+    <>
+      {projects.map((project, index) => (
+        <ProjectSlide key={project.num} project={project} index={index} />
+      ))}
+    </>
   )
 }

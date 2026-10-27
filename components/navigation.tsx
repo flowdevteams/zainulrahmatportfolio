@@ -1,95 +1,140 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Github, Instagram } from "lucide-react"
 
-interface NavigationProps {
-  activeSection: number
-  onNavigate: (index: number) => void
-  sections: { id: string; label: string }[]
-}
+const navItems = [
+  { label: "HOME", href: "#top" },
+  { label: "WORKS", href: "#projects" },
+  { label: "ABOUT ME", href: "#about" },
+  { label: "CONTACT", href: "#contact" },
+]
 
-export function Navigation({ activeSection, onNavigate, sections }: NavigationProps) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+const socialLinks = [
+  { icon: Github, label: "GitHub", href: "https://github.com/ZainulRhmt24" },
+  { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/z4yn.rs" },
+]
+
+export function Navigation() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    // Listen on both window scroll AND the fullpage-container scroll
+    const container = document.querySelector(".fullpage-container")
+    
+    const handleScroll = () => {
+      const scrolled = window.scrollY > 50 || (container ? container.scrollTop > 50 : false)
+      setIsScrolled(scrolled)
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    if (container) {
+      container.addEventListener("scroll", handleScroll, { passive: true })
+    }
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      if (container) {
+        container.removeEventListener("scroll", handleScroll)
+      }
+    }
+  }, [])
+
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => { document.body.style.overflow = "" }
+  }, [isOpen])
+
+  const handleNavClick = useCallback((href: string) => {
+    setIsOpen(false)
+    // Scroll the fullpage container to the target section
+    setTimeout(() => {
+      const target = document.querySelector(href)
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" })
+      }
+    }, 100)
+  }, [])
 
   return (
     <>
       <motion.header
-        className="fixed top-0 left-0 right-0 z-50 py-6 px-6 md:px-10"
+        className={`fixed top-0 left-0 right-0 z-50 px-6 sm:px-10 transition-all duration-500 ${
+          isScrolled
+            ? "glass-darker py-3"
+            : "py-5 bg-gradient-to-b from-[var(--sky-gradient-top)]/90 to-transparent"
+        }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <nav className="flex items-center justify-between">
+        <nav className="flex items-center justify-between max-w-[1400px] mx-auto">
           {/* Logo / Name */}
           <motion.a
-            href="#"
+            href="#top"
             onClick={(e) => {
               e.preventDefault()
-              onNavigate(0)
+              handleNavClick("#top")
             }}
-            className="text-base font-medium tracking-widest uppercase text-foreground hover:opacity-70 transition-opacity"
-            style={{ fontFamily: "var(--font-display)" }}
+            className="font-display text-base sm:text-lg text-foreground tracking-wider z-[110]"
             whileHover={{ scale: 1.02 }}
           >
             Zainul Rahmat
           </motion.a>
 
-          {/* Right side — social icons + menu button */}
-          <div className="flex items-center gap-6">
-            {/* Social Icons - Desktop */}
-            <div className="hidden md:flex items-center gap-4">
-              <a
-                href="https://github.com/ZainulRhmt24"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="GitHub"
-              >
-                <Github size={18} />
-              </a>
-              <a
-                href="https://www.instagram.com/z4yn.rs"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram size={18} />
-              </a>
+          {/* Right side: Social Icons + Hamburger */}
+          <div className="flex items-center gap-5 z-[110]">
+            {/* Social Icons (desktop only) */}
+            <div className="hidden sm:flex items-center gap-4">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground/60 hover:text-foreground transition-colors duration-300"
+                  aria-label={social.label}
+                >
+                  <social.icon size={17} strokeWidth={1.5} />
+                </a>
+              ))}
             </div>
+
+            {/* Separator */}
+            <div className="hidden sm:block w-[1px] h-4 bg-foreground/20" />
 
             {/* Hamburger Menu Button */}
             <button
-              className="relative w-8 h-6 flex flex-col justify-between items-end group"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="relative w-8 h-6 flex flex-col items-end justify-center gap-[5px] group cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
             >
               <motion.span
-                className="h-[1px] bg-foreground block origin-right"
-                animate={{
-                  width: isMobileMenuOpen ? 28 : 32,
-                  rotate: isMobileMenuOpen ? -45 : 0,
-                  y: isMobileMenuOpen ? -1 : 0,
-                }}
+                className="block h-[1.5px] bg-foreground origin-center"
+                animate={isOpen 
+                  ? { rotate: 45, y: 6.5, width: "24px" } 
+                  : { rotate: 0, y: 0, width: "24px" }
+                }
                 transition={{ duration: 0.3 }}
               />
               <motion.span
-                className="h-[1px] bg-foreground block"
-                animate={{
-                  width: isMobileMenuOpen ? 0 : 20,
-                  opacity: isMobileMenuOpen ? 0 : 1,
-                }}
+                className="block w-4 h-[1.5px] bg-foreground"
+                animate={isOpen ? { opacity: 0, x: 10 } : { opacity: 1, x: 0 }}
                 transition={{ duration: 0.2 }}
               />
               <motion.span
-                className="h-[1px] bg-foreground block origin-right"
-                animate={{
-                  width: isMobileMenuOpen ? 28 : 24,
-                  rotate: isMobileMenuOpen ? 45 : 0,
-                  y: isMobileMenuOpen ? 1 : 0,
-                }}
+                className="block h-[1.5px] bg-foreground origin-center"
+                animate={isOpen 
+                  ? { rotate: -45, y: -6.5, width: "24px" } 
+                  : { rotate: 0, y: 0, width: "18px" }
+                }
                 transition={{ duration: 0.3 }}
               />
             </button>
@@ -97,79 +142,61 @@ export function Navigation({ activeSection, onNavigate, sections }: NavigationPr
         </nav>
       </motion.header>
 
-      {/* Full Screen Navigation Overlay */}
+      {/* Fullscreen Navigation Menu */}
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {isOpen && (
           <motion.div
-            className="fixed inset-0 z-40 flex items-center justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
+            className="nav-curtain"
+            initial={{ clipPath: "circle(0% at calc(100% - 3rem) 2rem)" }}
+            animate={{ clipPath: "circle(150% at calc(100% - 3rem) 2rem)" }}
+            exit={{ clipPath: "circle(0% at calc(100% - 3rem) 2rem)" }}
+            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
           >
-            {/* Background */}
-            <motion.div
-              className="absolute inset-0 bg-background/95 backdrop-blur-lg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            />
-
-            {/* Menu Links */}
-            <nav className="relative z-10">
-              <ul className="flex flex-col items-center gap-4">
-                {sections.map((section, index) => (
+            <div className="flex flex-col items-center gap-12">
+              <ul className="flex flex-col items-center gap-8">
+                {navItems.map((item, index) => (
                   <motion.li
-                    key={section.id}
+                    key={item.label}
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 20 }}
-                    transition={{ delay: index * 0.08, duration: 0.4 }}
+                    transition={{ delay: 0.1 + index * 0.08, duration: 0.5 }}
                   >
-                    <button
-                      onClick={() => {
-                        onNavigate(index)
-                        setIsMobileMenuOpen(false)
+                    <a
+                      href={item.href}
+                      className="font-display text-3xl sm:text-5xl text-foreground hover:text-primary transition-colors duration-300 tracking-wider"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleNavClick(item.href)
                       }}
-                      className={`text-4xl md:text-6xl font-display tracking-wide transition-all duration-300 ${
-                        activeSection === index
-                          ? "text-foreground"
-                          : "text-muted-foreground hover:text-foreground"
-                      }`}
-                      style={{ fontFamily: "var(--font-display)" }}
                     >
-                      {section.label.toUpperCase()}
-                    </button>
+                      {item.label}
+                    </a>
                   </motion.li>
                 ))}
               </ul>
 
-              {/* Social links in menu */}
+              {/* Social links in mobile menu */}
               <motion.div
-                className="flex items-center justify-center gap-6 mt-12"
+                className="flex items-center gap-6 sm:hidden"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.5 }}
               >
-                <a
-                  href="https://github.com/ZainulRhmt24"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <Github size={22} />
-                </a>
-                <a
-                  href="https://www.instagram.com/z4yn.rs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <Instagram size={22} />
-                </a>
+                {socialLinks.map((social) => (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label={social.label}
+                  >
+                    <social.icon size={22} />
+                  </a>
+                ))}
               </motion.div>
-            </nav>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
