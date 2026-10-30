@@ -30,13 +30,14 @@ const projects: Project[] = [
     title: "Admin\nDenken",
     subtitle: "admin dashboard",
     image: "/projects/admin_denken.png",
-    link: "https://showroom-os-wktd.vercel.app/jakarta",
+    link: "https://showroom-os-wktd.vercel.app/admin",
     num: "02",
-    description: "Full-featured admin panel for managing showroom inventory, orders, user data, and analytics.",
+    description: "Full-featured admin panel for managing showroom inventory, orders, user data, and analytics. Login with email: admin@denkenmotors.id, password: AdminDenken2026!",
   },
   {
     title: "E-Commerce\nPlatform",
     subtitle: "website / web app",
+    description: "An e-commerce platform featuring product listings, shopping cart, and checkout flow built with Next.js, Tailwind CSS, and Stripe integration.",
     image: "/projects/e-commerce.png",
     link: "https://e-commerce-zeta-wine-86.vercel.app",
     num: "03",
@@ -44,6 +45,7 @@ const projects: Project[] = [
   {
     title: "Company\nProfile",
     subtitle: "website",
+    description: "A corporate company profile website showcasing services, portfolio, and contact information, developed with React and modern CSS animations.",
     image: "/projects/company_profile.png",
     link: "https://companyprofile-tau.vercel.app",
     num: "04",
@@ -51,6 +53,7 @@ const projects: Project[] = [
   {
     title: "Business\nDashboard",
     subtitle: "web application",
+    description: "A business analytics dashboard displaying key metrics, charts, and real-time data visualizations using D3.js and Recharts.",
     image: "/projects/business_dashboard.png",
     link: "https://business-dashboard-two-xi.vercel.app/",
     num: "05",
@@ -58,6 +61,7 @@ const projects: Project[] = [
   {
     title: "Restaurant\nWebsite",
     subtitle: "website",
+    description: "A restaurant website with menu showcase, reservation system, and responsive design, built with Next.js and Styled Components.",
     image: "/projects/restaurant.png",
     link: "https://restaurant-eight-orpin.vercel.app/",
     num: "06",
