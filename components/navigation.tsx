@@ -146,13 +146,14 @@ export function Navigation() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="nav-curtain"
+            className="nav-curtain fixed inset-0 z-40"
+            onClick={() => setIsOpen(false)}
             initial={{ clipPath: "circle(0% at calc(100% - 3rem) 2rem)" }}
             animate={{ clipPath: "circle(150% at calc(100% - 3rem) 2rem)" }}
             exit={{ clipPath: "circle(0% at calc(100% - 3rem) 2rem)" }}
             transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
           >
-            <div className="flex flex-col items-center gap-12">
+            <div className="flex flex-col items-center gap-12" onClick={(e) => e.stopPropagation()}>
               <ul className="flex flex-col items-center gap-8">
                 {navItems.map((item, index) => (
                   <motion.li
